@@ -14,6 +14,8 @@ import { teamPage } from "./teamPage";
 import { contactPage } from "./contactPage";
 import { portfolioPage } from "./portfolioPage";
 import { blogPage } from "./blogPage";
+import { termsPage } from "./termsPage";
+import { privacyPolicyPage } from "./privacyPolicyPage";
 
 export const schemaTypes = [
   testimonial,
@@ -32,4 +34,6 @@ export const schemaTypes = [
   contactPage,
   portfolioPage,
   blogPage,
+  termsPage,
+  privacyPolicyPage,
 ];

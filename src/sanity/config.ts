@@ -60,6 +60,12 @@ export const config = defineConfig({
                     S.listItem()
                       .title("Contact Page")
                       .child(S.document().schemaType("contactPage").documentId("contactPage")),
+                    S.listItem()
+                      .title("Terms & Conditions")
+                      .child(S.document().schemaType("termsPage").documentId("termsPage")),
+                    S.listItem()
+                      .title("Privacy Policy")
+                      .child(S.document().schemaType("privacyPolicyPage").documentId("privacyPolicyPage")),
                   ])
               ),
 

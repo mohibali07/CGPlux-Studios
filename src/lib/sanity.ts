@@ -30,7 +30,6 @@ export function urlFor(source: SanityImageSource) {
   return getBuilder().image(source);
 }
 
-
 export async function getTestimonials() {
   return getClient().fetch(`*[_type == "testimonial"] | order(order asc) {
     _id,
@@ -163,5 +162,19 @@ export async function getClients() {
     logo,
     website,
     isPartner
+  }`);
+}
+
+export async function getTermsPage() {
+  return getClient().fetch(`*[_type == "termsPage"][0] {
+    title,
+    content
+  }`);
+}
+
+export async function getPrivacyPolicyPage() {
+  return getClient().fetch(`*[_type == "privacyPolicyPage"][0] {
+    title,
+    content
   }`);
 }

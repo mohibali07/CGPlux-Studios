@@ -163,8 +163,8 @@ export default function Footer({
               &copy; {new Date().getFullYear()} CGplux Studios. All rights reserved.
             </div>
             <div className="flex gap-8">
-              <a href="#" className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-brand-accent transition-colors">Terms</a>
-              <a href="#" className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-brand-accent transition-colors">Privacy</a>
+              <Link href="/terms" className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-brand-accent transition-colors">Terms</Link>
+              <Link href="/privacy-policy" className="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-brand-accent transition-colors">Privacy</Link>
             </div>
           </div>
           
