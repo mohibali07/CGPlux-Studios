@@ -2,16 +2,14 @@ import Hero from "@/components/Hero";
 import AboutSection from "@/components/AboutSection";
 import ClientsSection from "@/components/ClientsSection";
 import PortfolioGrid from "@/components/PortfolioGrid";
-import ServiceGrid from "@/components/ServiceGrid";
+import StaticServices from "@/components/StaticServices";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
 import FounderSection from "@/components/FounderSection";
 import BlogPreview from "@/components/BlogPreview";
 import ContactCTA from "@/components/ContactCTA";
 import {
   getPortfolioItems,
-  getServices,
   getTestimonials,
-  getSiteSettings,
   getFounderProfile,
   getClients,
   getBlogPosts,
@@ -19,12 +17,10 @@ import {
 } from "@/lib/sanity";
 
 export default async function Home() {
-  const [portfolioItems, services, testimonials, settings, founder, allClients, blogPosts, homePage] =
+  const [portfolioItems, testimonials, founder, allClients, blogPosts, homePage] =
     await Promise.all([
       getPortfolioItems().catch(() => []),
-      getServices().catch(() => []),
       getTestimonials().catch(() => []),
-      getSiteSettings().catch(() => null),
       getFounderProfile().catch(() => null),
       getClients().catch(() => []),
       getBlogPosts().catch(() => []),
@@ -55,7 +51,7 @@ export default async function Home() {
       <section className="py-24 md:py-32 w-full max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
         <PortfolioGrid items={portfolioItems} />
       </section>
-      <ServiceGrid services={services} />
+      <StaticServices />
       <TestimonialsSlider testimonials={testimonials} />
       <FounderSection
         sectionEyebrow={founder?.sectionEyebrow}

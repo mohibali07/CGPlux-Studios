@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import ServicesShowcase from "@/components/ServicesShowcase";
-import { getServices, getServicesPage } from "@/lib/sanity";
+import StaticServices from "@/components/StaticServices";
+import { getServicesPage } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "Services | CGplux Studios",
@@ -8,10 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  const [services, servicesPage] = await Promise.all([
-    getServices().catch(() => []),
-    getServicesPage().catch(() => null),
-  ]);
+  const servicesPage = await getServicesPage().catch(() => null);
 
   return (
     <section className="pt-32 md:pt-48 pb-16 md:pb-32 bg-brand-dark overflow-hidden">
@@ -39,8 +36,8 @@ export default async function ServicesPage() {
         </div>
       </div>
       
-      <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 relative">
-        <ServicesShowcase services={services} />
+      <div className="w-full relative">
+        <StaticServices hideHeader />
       </div>
     </section>
   );
