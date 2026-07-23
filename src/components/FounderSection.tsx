@@ -83,19 +83,19 @@ export default function FounderSection({
         </div>
 
         {/* 2 Columns Layout */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center max-w-5xl mx-auto">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-20 items-start max-w-6xl mx-auto">
 
           {/* Image Column */}
-          <div className="founder-animate flex justify-center relative order-1 w-full">
-            <div className="w-full relative bg-black/50 overflow-hidden border border-white/[0.08] group rounded-2xl shadow-2xl">
+          <div className="founder-animate flex justify-center relative order-1 w-full lg:sticky lg:top-32">
+            <div className="w-full relative bg-black/50 overflow-hidden border border-white/[0.08] group rounded-2xl shadow-2xl aspect-[4/5] xl:aspect-[3/4]">
               <div className="absolute inset-0 bg-brand-accent/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
               <img
                 src={photoSrc}
                 alt="Founders"
-                className="w-full h-auto object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
               />
               <div className="absolute bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-500 text-center lg:text-left">
-                <div className="font-mono text-[10px] tracking-widest text-brand-accent uppercase mb-1">{imageEyebrow || "Founders"}</div>
+                <div className="font-mono text-[10px] tracking-widest text-brand-accent uppercase mb-1">{imageEyebrow || "Founder"}</div>
                 <div className="font-heading font-bold tracking-tight text-white text-xl">{imageTitle || "The Leadership"}</div>
               </div>
             </div>
@@ -109,12 +109,12 @@ export default function FounderSection({
             <div className="font-mono text-xs md:text-sm tracking-[0.2em] uppercase text-brand-accent mb-2">
               {role || "CEO & Founder"}
             </div>
-            <div className="font-heading text-xl text-white mb-4">
+            <div className="font-heading text-2xl md:text-3xl text-white mb-4">
               {name || "The CEO"}
             </div>
-            <div className="flex flex-col gap-4 text-white/60 leading-[1.8] text-[15px] max-w-[45ch]">
+            <div className="flex flex-col gap-5 text-white/60 leading-[1.8] text-[15px] lg:text-[16px] max-w-none">
               {displayBio1.map((para, i) => (
-                <p key={i}>
+                <p key={i} className="whitespace-pre-line">
                   {para}
                 </p>
               ))}
