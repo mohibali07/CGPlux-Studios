@@ -41,7 +41,7 @@ export default async function PortfolioPage() {
         </div>
       </div>
       <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 relative">
-        <PortfolioGrid items={items} />
+        <PortfolioGrid items={items} layout="grid" />
       </div>
     </section>
   );
