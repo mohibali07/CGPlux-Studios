@@ -66,7 +66,6 @@ export const config = defineConfig({
             S.divider(),
 
             // Collections
-            S.documentTypeListItem("service").title("Services (List)"),
             S.documentTypeListItem("portfolioItem").title("Portfolio Items"),
             S.documentTypeListItem("teamMember").title("Team Members"),
             S.documentTypeListItem("blogPost").title("Blog Posts"),

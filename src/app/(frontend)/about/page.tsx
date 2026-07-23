@@ -3,7 +3,7 @@ import AboutSection from "@/components/AboutSection";
 import FounderSection from "@/components/FounderSection";
 import ClientsSection from "@/components/ClientsSection";
 import ContactCTA from "@/components/ContactCTA";
-import { getSiteSettings, getFounderProfile, getClients, getHomePage, getAboutPage } from "@/lib/sanity";
+import { getFounderProfile, getClients, getHomePage, getAboutPage } from "@/lib/sanity";
 
 export const metadata: Metadata = {
   title: "About Us | CGplux Studios",
@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const [settings, founder, allClients, homePage, aboutPage] = await Promise.all([
-    getSiteSettings().catch(() => null),
+  const [founder, allClients, homePage, aboutPage] = await Promise.all([
     getFounderProfile().catch(() => null),
     getClients().catch(() => []),
     getHomePage().catch(() => null),
@@ -65,9 +64,6 @@ export default async function AboutPage() {
         role={founder?.role}
         designation={founder?.designation}
         bio={founder?.bio}
-        coFounderName={founder?.coFounderName}
-        coFounderRole={founder?.coFounderRole}
-        coFounderBio={founder?.coFounderBio}
         photo={founder?.photo}
         instagramUrl={founder?.instagramUrl}
         linkedinUrl={founder?.linkedinUrl}

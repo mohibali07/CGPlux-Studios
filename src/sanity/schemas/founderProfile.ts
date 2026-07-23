@@ -21,17 +21,6 @@ export const founderProfile = defineType({
       of: [{ type: "text" }],
       description: "Each item is a separate paragraph in the CEO's bio.",
     }),
-    
-    // Co-Founder Fields
-    defineField({ name: "coFounderName", title: "Co-Founder Full Name", type: "string" }),
-    defineField({ name: "coFounderRole", title: "Co-Founder Role / Title", type: "string" }),
-    defineField({
-      name: "coFounderBio",
-      title: "Co-Founder Bio Paragraphs",
-      type: "array",
-      of: [{ type: "text" }],
-      description: "Each item is a separate paragraph in the Co-Founder's bio.",
-    }),
 
     defineField({
       name: "photo",

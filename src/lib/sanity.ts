@@ -31,37 +31,6 @@ export function urlFor(source: SanityImageSource) {
 }
 
 
-export async function getServices() {
-  return getClient().fetch(`*[_type == "service"] | order(order asc) {
-    _id,
-    title,
-    slug,
-    description,
-    tags,
-    image
-  }`);
-}
-
-export async function getServiceBySlug(slug: string) {
-  return getClient().fetch(
-    `*[_type == "service" && slug.current == $slug][0] {
-      _id,
-      title,
-      slug,
-      description,
-      content,
-      tags,
-      image,
-      childServices[] {
-        title,
-        description,
-        image
-      }
-    }`,
-    { slug }
-  );
-}
-
 export async function getTestimonials() {
   return getClient().fetch(`*[_type == "testimonial"] | order(order asc) {
     _id,
@@ -181,9 +150,6 @@ export async function getFounderProfile() {
     role,
     designation,
     bio,
-    coFounderName,
-    coFounderRole,
-    coFounderBio,
     photo,
     instagramUrl,
     linkedinUrl

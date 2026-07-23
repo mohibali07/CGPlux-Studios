@@ -1,4 +1,3 @@
-import { service } from "./service";
 import { testimonial } from "./testimonial";
 import { siteSettings } from "./siteSettings";
 import { teamMember } from "./teamMember";
@@ -17,7 +16,6 @@ import { portfolioPage } from "./portfolioPage";
 import { blogPage } from "./blogPage";
 
 export const schemaTypes = [
-  service,
   testimonial,
   siteSettings,
   teamMember,
