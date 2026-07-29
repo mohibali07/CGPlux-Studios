@@ -15,7 +15,7 @@ import {
   getBlogPosts,
   getHomePage,
 } from "@/lib/sanity";
-
+export const dynamic = 'force-dynamic';
 export default async function Home() {
   const [portfolioItems, testimonials, founder, allClients, blogPosts, homePage] =
     await Promise.all([
