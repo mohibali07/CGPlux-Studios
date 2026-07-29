@@ -1,49 +1,183 @@
-name: Deploy Next.js Frontend
+name: Deploy to production
 
+# Runs on push to main, or manually from Actions.
 on:
-  push:
-    branches: [ main ]
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Branch or commit SHA to deploy
+        required: false
+        default: main
+        type: string
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  APP_DIR: /www/wwwroot/cgpluxstudios.com
+  SITE_URL: https://cgpluxstudios.com
 
 jobs:
-  build-and-deploy:
+  deploy:
+    name: Deploy to VPS
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: production
+      url: https://cgpluxstudios.com
+
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-
-      - name: Install Dependencies & Build
+      - name: Resolve deploy target
+        id: target
         run: |
-          npm ci
-          npm run build
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            ref="${{ github.event.inputs.ref }}"
+            [ -z "$ref" ] && ref="main"
+            echo "mode=ref" >> "$GITHUB_OUTPUT"
+            echo "ref=$ref" >> "$GITHUB_OUTPUT"
+            echo "Deploying ref: $ref (manual)"
+          else
+            sha="${{ github.sha }}"
+            echo "mode=sha" >> "$GITHUB_OUTPUT"
+            echo "sha=$sha" >> "$GITHUB_OUTPUT"
+            echo "Deploying SHA: $sha (push)"
+          fi
+
+      - name: Verify deploy secrets and SSH key
         env:
-          NEXT_PUBLIC_SANITY_PROJECT_ID: "w146za87"
-          NEXT_PUBLIC_SANITY_DATASET: "production"
+          SERVER_HOST: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY_B64: ${{ secrets.SSH_PRIVATE_KEY_B64 }}
+        run: |
+          missing=""
+          [ -z "$SERVER_HOST" ] && missing="$missing SERVER_IP"
+          [ -z "$SERVER_USER" ] && missing="$missing SERVER_USER"
+          if [ -z "$SSH_PRIVATE_KEY" ] && [ -z "$SSH_PRIVATE_KEY_B64" ]; then
+            missing="$missing SSH_PRIVATE_KEY_B64 (or SSH_PRIVATE_KEY)"
+          fi
+          if [ -n "$missing" ]; then
+            echo "::error::Missing GitHub Actions secrets:$missing"
+            echo "Add them at: Repository → Settings → Secrets and variables → Actions"
+            exit 1
+          fi
 
-      - name: Deploy to Server via SCP
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 11092
-          source: ".next,public,package.json,package-lock.json"
-          target: "/www/wwwroot/cgpluxstudios.com"
+          umask 077
+          mkdir -p ~/.ssh
 
-      - name: Restart Server via SSH
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 11092
-          script: |
-            cd /www/wwwroot/cgpluxstudios.com
-            npm ci --production
-            pm2 delete cgpluxstudios-frontend cgpluxstudios || true
-            pm2 start npm --name "cgpluxstudios-frontend" -- run start -- -p 3001
-            pm2 save
+          if [ -n "$SSH_PRIVATE_KEY_B64" ]; then
+            echo "Using SSH_PRIVATE_KEY_B64"
+            echo "$SSH_PRIVATE_KEY_B64" | tr -d '[:space:]' | base64 -d > ~/.ssh/deploy_key
+          elif echo "$SSH_PRIVATE_KEY" | grep -q 'BEGIN.*PRIVATE KEY'; then
+            echo "Using SSH_PRIVATE_KEY (PEM)"
+            printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/deploy_key
+          elif echo "$SSH_PRIVATE_KEY" | tr -d '[:space:]' | base64 -d 2>/dev/null | grep -q 'BEGIN.*PRIVATE KEY'; then
+            echo "Using SSH_PRIVATE_KEY (base64-encoded PEM)"
+            echo "$SSH_PRIVATE_KEY" | tr -d '[:space:]' | base64 -d > ~/.ssh/deploy_key
+          else
+            echo "::error::SSH key secret is invalid."
+            exit 1
+          fi
+
+          chmod 600 ~/.ssh/deploy_key
+
+          if ! grep -q 'BEGIN.*PRIVATE KEY' ~/.ssh/deploy_key; then
+            echo "::error::Decoded key is not a PEM private key."
+            exit 1
+          fi
+          echo "DEPLOY_KEY_PATH=${HOME}/.ssh/deploy_key" >> "$GITHUB_ENV"
+          echo "SSH key format OK"
+
+      - name: Trust server host key
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_IP }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          if [ -n "$SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p 11092 -H "$SERVER_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          fi
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Verify SSH connection
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          set -euo pipefail
+          pubkey=$(ssh-keygen -y -f "$DEPLOY_KEY_PATH")
+          echo "Deploy key fingerprint:"
+          echo "$pubkey" | ssh-keygen -lf -
+          if ssh -i "$DEPLOY_KEY_PATH" \
+            -o StrictHostKeyChecking=yes \
+            -o BatchMode=yes \
+            -o ConnectTimeout=30 \
+            -p 11092 \
+            "${SERVER_USER}@${SERVER_HOST}" \
+            "echo 'SSH connection OK'"; then
+            echo "SSH authentication succeeded"
+          else
+            echo "::error::SSH authentication failed for ${SERVER_USER}@${SERVER_HOST}"
+            exit 1
+          fi
+
+      - name: Deploy over SSH
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+          APP_DIR: ${{ env.APP_DIR }}
+          DEPLOY_MODE: ${{ steps.target.outputs.mode }}
+          DEPLOY_SHA: ${{ steps.target.outputs.sha }}
+          DEPLOY_REF: ${{ steps.target.outputs.ref }}
+        run: |
+          set -euo pipefail
+
+          if [ "$DEPLOY_MODE" = "sha" ]; then
+            target_sha="$DEPLOY_SHA"
+          elif echo "$DEPLOY_REF" | grep -qE '^[0-9a-f]{7,40}$'; then
+            target_sha="$DEPLOY_REF"
+          else
+            target_sha="origin/${DEPLOY_REF}"
+          fi
+
+          echo "Running deploy-remote.sh for ${target_sha}"
+          ssh -i "$DEPLOY_KEY_PATH" \
+            -o StrictHostKeyChecking=yes \
+            -o BatchMode=yes \
+            -o ConnectTimeout=30 \
+            -p 11092 \
+            "${SERVER_USER}@${SERVER_HOST}" \
+            "export DEPLOY_SHA='${target_sha}' && cd '${APP_DIR}' && git fetch origin --prune && git reset --hard \"\${DEPLOY_SHA}\" && chmod +x scripts/deploy-remote.sh && ./scripts/deploy-remote.sh"
+
+      - name: Deployment summary
+        if: always()
+        env:
+          DEPLOY_MODE: ${{ steps.target.outputs.mode }}
+          DEPLOY_SHA: ${{ steps.target.outputs.sha }}
+          DEPLOY_REF: ${{ steps.target.outputs.ref }}
+        run: |
+          {
+            echo "## Production deploy"
+            echo ""
+            if [ "$DEPLOY_MODE" = "sha" ]; then
+              echo "- **Trigger:** Push to \`main\`"
+              echo "- **Commit:** [\`${DEPLOY_SHA:0:7}\`](https://github.com/${{ github.repository }}/commit/${DEPLOY_SHA})"
+            else
+              echo "- **Trigger:** Manual (\`workflow_dispatch\`)"
+              echo "- **Ref:** \`${DEPLOY_REF}\`"
+            fi
+            echo "- **Site:** ${{ env.SITE_URL }}"
+            echo "- **Job status:** ${{ job.status }}"
+          } >> "$GITHUB_STEP_SUMMARY"
