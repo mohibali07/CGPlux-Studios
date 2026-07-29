@@ -43,4 +43,5 @@ jobs:
           port: 11092
           script: |
             cd /www/wwwroot/cgpluxstudios.com
+            pm2 delete cgplux-frontend || true
             pm2 reload cgpluxstudios-frontend || pm2 start npm --name "cgpluxstudios-frontend" -- run start -- -p 3001
