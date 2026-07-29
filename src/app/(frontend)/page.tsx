@@ -19,13 +19,16 @@ import {
 export default async function Home() {
   const [portfolioItems, testimonials, founder, allClients, blogPosts, homePage] =
     await Promise.all([
-      getPortfolioItems().catch(() => []),
-      getTestimonials().catch(() => []),
-      getFounderProfile().catch(() => null),
-      getClients().catch(() => []),
-      getBlogPosts().catch(() => []),
-      getHomePage().catch(() => null),
+      getPortfolioItems(),
+      getTestimonials(),
+      getFounderProfile(),
+      getClients(),
+      getBlogPosts(),
+      getHomePage(),
     ]);
+
+  console.log("DEBUG homePage data:", homePage);
+  console.log("DEBUG portfolio items length:", portfolioItems.length);
 
   const clients = allClients.filter((c: { isPartner?: boolean }) => !c.isPartner);
   const partners = allClients.filter((c: { isPartner?: boolean }) => c.isPartner);

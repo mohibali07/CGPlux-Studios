@@ -28,8 +28,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSiteSettings().catch(() => null);
+
+  const settings = await getSiteSettings();
+  
   const logoUrl = settings?.logo ? urlFor(settings.logo).url() : undefined;
+
 
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
