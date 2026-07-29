@@ -12,7 +12,6 @@ const inter = Inter({
   weight: ["300", "400", "700", "800"],
 });
 
-export const revalidate = 10;
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings().catch(() => null);
