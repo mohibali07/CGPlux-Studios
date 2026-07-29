@@ -27,9 +27,6 @@ export default async function Home() {
       getHomePage(),
     ]);
 
-  console.log("DEBUG homePage data:", homePage);
-  console.log("DEBUG portfolio items length:", portfolioItems.length);
-
   const clients = allClients.filter((c: { isPartner?: boolean }) => !c.isPartner);
   const partners = allClients.filter((c: { isPartner?: boolean }) => c.isPartner);
 

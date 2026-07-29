@@ -8,7 +8,6 @@ let _client: SanityClient | null = null;
 let _builder: ReturnType<typeof createImageUrlBuilder> | null = null;
 
 function getClient(): SanityClient {
-  console.log("getClient called with PROJECT_ID:", process.env.NEXT_PUBLIC_SANITY_PROJECT_ID);
   if (!_client) {
     _client = createClient({
       projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
@@ -61,14 +60,7 @@ export async function getSiteSettings() {
 }
 
 export async function getHomePage() {
-  try {
-    const res = await getClient().fetch(`*[_type == "homePage"][0]`);
-    console.log("getHomePage fetch SUCCESS:", res);
-    return res;
-  } catch (err) {
-    console.error("getHomePage fetch ERROR:", err);
-    throw err;
-  }
+  return getClient().fetch(`*[_type == "homePage"][0]`);
 }
 
 export async function getAboutPage() {
