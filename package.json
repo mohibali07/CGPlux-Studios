@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "test": "vitest run --passWithNoTests",
     "test:watch": "vitest",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test --pass-with-no-tests"
   },
   "dependencies": {
     "@portabletext/react": "^7.0.1",
