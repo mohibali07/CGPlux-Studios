@@ -16,6 +16,8 @@ import {
   getHomePage,
 } from "@/lib/sanity";
 
+export const revalidate = 10;
+
 export default async function Home() {
   const [portfolioItems, testimonials, founder, allClients, blogPosts, homePage] =
     await Promise.all([
