@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 11092
-          source: ".next,public,package.json,node_modules"
+          source: ".next,public,package.json,package-lock.json"
           target: "/www/wwwroot/cgpluxstudios.com"
 
       - name: Restart Server via SSH
@@ -43,5 +43,6 @@ jobs:
           port: 11092
           script: |
             cd /www/wwwroot/cgpluxstudios.com
+            npm ci --production
             pm2 delete cgplux-frontend || true
             pm2 reload cgpluxstudios-frontend || pm2 start npm --name "cgpluxstudios-frontend" -- run start -- -p 3001
