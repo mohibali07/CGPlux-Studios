@@ -44,6 +44,6 @@ jobs:
           script: |
             cd /www/wwwroot/cgpluxstudios.com
             npm ci --production
-            pm2 delete cgpluxstudios-frontend
+            pm2 delete cgpluxstudios-frontend cgpluxstudios || true
             pm2 start npm --name "cgpluxstudios-frontend" -- run start -- -p 3001
             pm2 save
