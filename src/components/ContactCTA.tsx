@@ -40,7 +40,7 @@ export default function ContactCTA({ ctaTitle, ctaSubtitle, ctaEmail }: ContactC
     return () => ctx.revert();
   }, []);
 
-  const email = ctaEmail || "hello@CGpluxdigital.com";
+  const email = ctaEmail || "info@cgpluxstudios.com";
 
   return (
     <section ref={sectionRef} className="py-24 md:py-32 bg-brand-dark relative overflow-hidden">
