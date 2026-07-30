@@ -6,6 +6,8 @@ import LenisScroller from "@/components/LenisScroller";
 import { getSiteSettings, urlFor } from "@/lib/sanity";
 import "../globals.css";
 
+export const dynamic = 'force-dynamic';
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
