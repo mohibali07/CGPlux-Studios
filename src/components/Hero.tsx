@@ -143,7 +143,7 @@ export default function Hero({
             className="hero-button group relative inline-flex items-center justify-center h-[54px] px-8 sm:px-10 rounded-full font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] bg-white overflow-hidden shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(56,199,192,0.3)] transition-shadow duration-500"
           >
             <div className="absolute inset-0 bg-brand-accent transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
-            <span className="relative z-10 text-brand-dark group-hover:text-white transition-colors duration-500 font-bold">View Work</span>
+            <span className="relative z-10 text-brand-dark group-hover:text-white transition-colors duration-500 font-bold">View Portfolio</span>
           </Link>
           
           <Link href="#about" className="hero-button w-[54px] h-[54px] rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/40 transition-all backdrop-blur-md">

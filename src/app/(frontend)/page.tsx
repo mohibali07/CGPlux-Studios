@@ -3,6 +3,7 @@ import AboutSection from "@/components/AboutSection";
 import ClientsSection from "@/components/ClientsSection";
 import PortfolioGrid from "@/components/PortfolioGrid";
 import StaticServices from "@/components/StaticServices";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
 import FounderSection from "@/components/FounderSection";
 import BlogPreview from "@/components/BlogPreview";
@@ -52,6 +53,7 @@ export default async function Home() {
         <PortfolioGrid items={portfolioItems} />
       </section>
       <StaticServices />
+      <WhyChooseUs />
       <TestimonialsSlider testimonials={testimonials} />
       <FounderSection
         sectionEyebrow={founder?.sectionEyebrow}

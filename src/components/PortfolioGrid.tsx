@@ -129,7 +129,7 @@ export default function PortfolioGrid({ items, layout = "carousel" }: PortfolioG
             Portfolio
           </div>
           <h1 className="font-extrabold tracking-tight text-[48px] max-md:text-[36px] mb-6">
-            Our Work
+            Featured Work
           </h1>
         </div>
 

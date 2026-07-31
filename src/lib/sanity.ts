@@ -13,7 +13,7 @@ function getClient(): SanityClient {
       projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "placeholder",
       dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
       apiVersion: "2024-01-01",
-      useCdn: true,
+      useCdn: false, // Set to false to bypass CDN cache and get instant updates
       fetch: { next: { revalidate: 0 } }
     });
   }

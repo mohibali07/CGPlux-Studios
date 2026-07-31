@@ -7,69 +7,51 @@ import {
   MonitorPlay,
   Film,
   Sparkles,
-  PencilRuler,
-  Sofa,
-  Home,
-  Wand2,
   SlidersHorizontal,
-  Layers
+  Layers,
+  Wand2
 } from "lucide-react";
 
 const staticServices = [
   {
-    title: "3D Designing",
-    description: "3D designing involves creating detailed and realistic digital models or visualizations using specialized software.",
+    title: "Commercial Production",
+    description: "From concept to final delivery, we produce cinematic commercials designed to tell compelling brand stories across digital and broadcast platforms.",
     icon: Video,
   },
   {
-    title: "Product Designing",
-    description: "Producing realistic 3D product designs to convey concepts effectively.",
+    title: "CGI & Product Visualization",
+    description: "Photoreal CGI visuals and product imagery that showcase every detail with cinematic quality.",
     icon: Box,
   },
   {
     title: "Product Animation",
-    description: "Bringing products to life through stunning animations.",
+    description: "High-end animations that transform products into engaging visual experiences.",
     icon: MonitorPlay,
   },
   {
-    title: "CGI Advertisment",
-    description: "Crafting attention-grabbing advertisements based on your ideas.",
+    title: "Film Production",
+    description: "Creative direction, filming, and production for commercial campaigns, branded content, and promotional films.",
     icon: Film,
   },
   {
-    title: "CG Animation",
-    description: "CG animation creates moving images using 3D computer graphics to bring characters and environments to life with realistic movement and intricate details.",
+    title: "Visual Effects",
+    description: "Advanced compositing and visual effects that seamlessly blend imagination with reality.",
     icon: Sparkles,
   },
   {
-    title: "Architecture Design",
-    description: "Offering comprehensive designs of innovative architectural structures.",
-    icon: PencilRuler,
-  },
-  {
-    title: "Interior Design",
-    description: "Developing beautiful and functional interior designs.",
-    icon: Sofa,
-  },
-  {
-    title: "Exterior Design",
-    description: "Designing: Crafting stunning exterior designs that amaze.",
-    icon: Home,
-  },
-  {
-    title: "Visual Effects",
-    description: "Enhancing visuals with cutting-edge VFX.",
-    icon: Wand2,
-  },
-  {
     title: "Post Production",
-    description: "Perfecting projects with top-of-the-line post-production services.",
+    description: "Professional editing, color grading, compositing, sound design, and finishing for polished commercial content.",
     icon: SlidersHorizontal,
   },
   {
     title: "Motion Graphics",
-    description: "Motion graphics are digital animations combining text, shapes, and images to create dynamic visual content.",
+    description: "Modern motion design that enhances storytelling across advertisements, social media, and digital campaigns.",
     icon: Layers,
+  },
+  {
+    title: "Creative Direction",
+    description: "Strategic visual planning that ensures every production aligns with your brand identity and campaign goals.",
+    icon: Wand2,
   }
 ];
 

@@ -93,7 +93,7 @@ export default function ClientsSection({ clients, partners }: ClientsSectionProp
         <div className="w-full max-w-[1400px] mx-auto px-6 lg:px-12 flex items-center justify-between z-20 pointer-events-none">
           <div className="font-mono text-xs uppercase tracking-[0.22em] text-brand-accent flex items-center gap-4">
             <span className="w-8 h-[1px] bg-brand-accent"></span>
-            Trusted By
+            Trusted By Brands & Creative Partners
           </div>
         </div>
         

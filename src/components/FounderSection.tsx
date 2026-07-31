@@ -76,8 +76,8 @@ export default function FounderSection({
             />
           ) : (
             <h2 className="font-heading font-medium tracking-tight text-[48px] md:text-[64px] leading-[1.1] text-white">
-              The Minds Behind<br/>
-              <span className="text-white/50 italic font-light">The Studio</span>
+              The Mind Behind<br/>
+              <span className="text-white/50 italic font-light">CGplux Studios</span>
             </h2>
           )}
         </div>
