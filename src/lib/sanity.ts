@@ -133,6 +133,7 @@ export async function getPortfolioItems(category?: string) {
     title,
     slug,
     image,
+    "imageUrl": image.asset->url,
     category,
     excerpt
   }`

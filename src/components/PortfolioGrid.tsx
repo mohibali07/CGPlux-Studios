@@ -12,6 +12,7 @@ interface PortfolioItem {
   title: string;
   slug: { current: string };
   image?: any;
+  imageUrl?: string;
   category?: string;
   excerpt?: string;
 }
@@ -188,14 +189,11 @@ export default function PortfolioGrid({ items, layout = "carousel" }: PortfolioG
                 className="flex-none w-[85vw] md:w-[45vw] lg:w-[32vw] snap-center portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] md:aspect-[4/5] rounded-2xl border border-white/[0.08] bg-black overflow-hidden group cursor-pointer"
               >
                 <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
-                  {item.image ? (
-                    <Image
-                      src={urlFor(item.image).width(600).height(800).url()}
+                  {(item.imageUrl || item.image) ? (
+                    <img
+                      src={item.imageUrl || (item.image ? urlFor(item.image).url() : '')}
                       alt={item.title}
-                      fill
-                      priority={index < 3}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale-[0.8] brightness-[0.8] group-hover:grayscale-0 group-hover:brightness-100"
+                      className="w-full h-full object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale-[0.8] brightness-[0.8] group-hover:grayscale-0 group-hover:brightness-100"
                     />
                   ) : (
                     <>
@@ -227,14 +225,11 @@ export default function PortfolioGrid({ items, layout = "carousel" }: PortfolioG
               className="portfolio-card opacity-0 project-card magnetic relative aspect-[3/4] rounded-xl border border-white/[0.08] bg-black overflow-hidden group cursor-pointer"
             >
               <div className="absolute inset-0 transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] group-hover:scale-[1.05]">
-                {item.image ? (
-                  <Image
-                    src={urlFor(item.image).width(600).height(800).url()}
+                {(item.imageUrl || item.image) ? (
+                  <img
+                    src={item.imageUrl || (item.image ? urlFor(item.image).url() : '')}
                     alt={item.title}
-                    fill
-                    priority={index < 3}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale-[0.8] brightness-[0.8] group-hover:grayscale-0 group-hover:brightness-100"
+                    className="w-full h-full object-cover transition-all duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] filter grayscale-[0.8] brightness-[0.8] group-hover:grayscale-0 group-hover:brightness-100"
                   />
                 ) : (
                   <>
